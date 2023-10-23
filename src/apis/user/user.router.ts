@@ -17,8 +17,8 @@ userRouter.post(
     body: userSchema,
   }),
   async (request: Request, response: Response) => {
-    const { username } = request.body;
-    const newUser: User = new User({ username });
+    const { username, password } = request.body;
+    const newUser: User = new User({ username, password });
     await newUser.save();
     return response.status(200).json(newUser);
   }

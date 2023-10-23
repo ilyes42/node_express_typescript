@@ -4,7 +4,10 @@ import {
   Model,
   AutoIncrement,
   PrimaryKey,
+  BeforeCreate,
 } from "sequelize-typescript";
+
+import { crypt } from "../../lib/crypt";
 
 @Table
 export default class User extends Model {
@@ -15,4 +18,13 @@ export default class User extends Model {
 
   @Column
   username!: string;
+
+  @Column
+  password!: string;
+
+  @BeforeCreate
+  static async encryptPassword(instance: User) {
+    const crypted = await crypt(instance.password);
+    instance.password = crypted;
+  }
 }
