@@ -1,5 +1,5 @@
 import express, { type Express, json } from "express";
-import { userRouter } from "./apis/users/user.router";
+import { userRouter } from "./apis/user/user.router";
 import { Database } from "./database";
 
 export async function initServer() {
