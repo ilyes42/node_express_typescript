@@ -1,6 +1,7 @@
 import express, { type Express, json } from "express";
-import { userRouter } from "./apis/user/user.router";
+import { userRouter } from "./domains/user/user.router";
 import { Database } from "./database";
+import { bookRouter } from "./domains/book/book.router";
 
 export async function initServer() {
   try {
@@ -11,6 +12,7 @@ export async function initServer() {
 
     app.use(json());
     app.use("/users", userRouter);
+    app.use("/books", bookRouter);
 
     const server = await app.listen(port);
     console.log("Server started successfully!");

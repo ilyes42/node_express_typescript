@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
-import path from "path";
+import path, { dirname } from "path";
 
 export class Database {
   private static instance: Sequelize;
@@ -9,12 +9,15 @@ export class Database {
   public static async getInstance(): Promise<Sequelize> {
     if (!this.instance) {
       try {
-        this.instance = new Sequelize("sqlite::memory:");
+        this.instance = new Sequelize({
+          dialect: "sqlite",
+          storage: path.normalize(__dirname + "/../db.sqlite"),
+        });
         await this.instance.authenticate();
-        await this.instance.addModels([
-          path.resolve(__dirname + "/apis/**/*.model.ts"),
+        this.instance.addModels([
+          path.resolve(__dirname + "/domains/**/*.database.model.ts"),
         ]);
-        await this.instance.sync({ force: true });
+        await this.instance.sync();
         console.log("Database connection has been established successfully.");
         return this.instance;
       } catch (error) {
